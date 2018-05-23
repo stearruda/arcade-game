@@ -20,6 +20,12 @@ Enemy.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers.
 
+    // https://discussions.udacity.com/t/how-do-i-define-the-enemys-speed/185100
+    this.x = this.x + (this.speed * dt);
+    
+    if (this.x > 506) {
+        this.x = -100;
+    }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -50,6 +56,7 @@ Player.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
 };
 
 // Draw the player on the screen, required method for game
@@ -57,7 +64,7 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function() {
+Player.prototype.handleInput = function(key) {
 
 };
 
@@ -66,8 +73,10 @@ Player.prototype.handleInput = function() {
 */
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-let enemy_1 = new Enemy(0, 50);
-let allEnemies = [enemy_1];
+let enemy_1 = new Enemy(0, 60, 180);
+let enemy_2 = new Enemy(0, 140, 100);
+let enemy_3 = new Enemy(0, 225, 50);
+let allEnemies = [enemy_1, enemy_2, enemy_3];
 
 // Place the player object in a variable called player
 let player = new Player(200, 400);
