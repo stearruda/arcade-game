@@ -65,7 +65,19 @@ Player.prototype.render = function() {
 };
 
 Player.prototype.handleInput = function(key) {
-
+    if (key === 'up') {
+        console.log('up!');
+        this.y -= 90;
+    } else if (key === 'down') {
+        console.log('down');
+        this.y += 90;   
+    } else if (key === 'left') {
+        console.log('left');
+        this.x -= 100;  
+    } else if (key === 'right') {
+        console.log('right');
+        this.x += 100;  
+    }
 };
 
 /*
