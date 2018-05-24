@@ -33,6 +33,21 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// When enemy and player collision happen = they occupy the same space
+Enemy.prototype.checkCollisions = function() {
+    // Check if enemy and player are at same line
+    if (this.y === player.y) {
+        // Check if enemy and player are touching horizontaly
+        let enemyRightSideX = this.x + 101;
+        let playerRightSideX = player.x + 101;
+        if((enemyRightSideX > player.x) && !(playerRightSideX < this.x)){
+            player.x = 200;
+            player.y = 400;
+            console.log('hit!');
+        }
+    } 
+};
+
 
 /*
  ****** PLAYER CONSTRUCTOR ******
@@ -56,7 +71,6 @@ Player.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-
 };
 
 // Draw the player on the screen, required method for game
@@ -67,44 +81,49 @@ Player.prototype.render = function() {
 // Handle direction of Player
 Player.prototype.handleInput = function(key) {
     if (key === 'up') {
-        console.log('up!');
         this.y -= 90;
+
+        // Check if Player reaches the "Water Block" = Wins the game
         if(this.y === -50) {
-            console.log('You won!')
             this.x = 200;
             this.y = 400;
+            console.log('You won!')
         }
     } else if (key === 'down') {
-        console.log('down');
-        this.y += 90;   
+        this.y += 90;
+
+        // Bottom boundary 
         if(this.y === 490) {
             this.y = 400;
         }
     } else if (key === 'left') {
-        console.log('left');
         this.x -= 100;
+
+        // Left boundary 
         if (this.x === -100) {
             this.x = 0;
         } 
     } else if (key === 'right') {
-        console.log('right');
-        this.x += 100; 
+        this.x += 100;
+
+        // Right boundary
         if (this.x === 500) {
             this.x = 400;
         }
     }
 };
 
+
+
 /*
  ****** INSTANTIATE OBJECTS ******
 */
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-let enemy_1 = new Enemy(0, 60, 180);
-let enemy_2 = new Enemy(0, 140, 100);
-let enemy_3 = new Enemy(0, 225, 50);
+let enemy_1 = new Enemy(0, 40, 180);
+let enemy_2 = new Enemy(0, 130, 100);
+let enemy_3 = new Enemy(0, 220, 50);
 let allEnemies = [enemy_1, enemy_2, enemy_3];
-
 // Place the player object in a variable called player
 let player = new Player(200, 400);
 
