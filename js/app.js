@@ -64,19 +64,34 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Handle direction of Player
 Player.prototype.handleInput = function(key) {
     if (key === 'up') {
         console.log('up!');
         this.y -= 90;
+        if(this.y === -50) {
+            console.log('You won!')
+            this.x = 200;
+            this.y = 400;
+        }
     } else if (key === 'down') {
         console.log('down');
         this.y += 90;   
+        if(this.y === 490) {
+            this.y = 400;
+        }
     } else if (key === 'left') {
         console.log('left');
-        this.x -= 100;  
+        this.x -= 100;
+        if (this.x === -100) {
+            this.x = 0;
+        } 
     } else if (key === 'right') {
         console.log('right');
-        this.x += 100;  
+        this.x += 100; 
+        if (this.x === 500) {
+            this.x = 400;
+        }
     }
 };
 
