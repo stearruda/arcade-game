@@ -2,10 +2,44 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <title>Frogger</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Chewy" rel="stylesheet">
 </head>
 <body>
+
+	<!-- HEADER -->
+	<h1>Frogger</h1>
+	<div class="panel">
+		<div class="level">
+			<h4>Level</h4>
+			<span class="level-number">0</span>
+		</div>
+		
+		<div class="lives">
+			<h4>Lives</h4>
+			<span class="lives">0</span>
+		</div>
+
+		<div class="score">
+			<h4>Score</h4>
+			<span class="score-number">0</span>
+		</div>
+	</div>
+	<!-- /HEADER -->
+	
+
+	<!-- START SCREEN -->
+	<div id="startScreen" class="modal-container">
+        <div class="modal">
+            <h2>Frogger</h2>
+            <h3>How to Play</h3>
+            <p>Use the arrow keys.</p>
+            <input id="playGame" type="button" class="button" value="Play!">
+        </div>
+    </div>
+	<!-- /START SCREEN -->
+
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
