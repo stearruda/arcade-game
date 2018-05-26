@@ -41,9 +41,7 @@ Enemy.prototype.checkCollisions = function() {
         let enemyRightSideX = this.x + 101;
         let playerRightSideX = player.x + 101;
         if((enemyRightSideX > player.x) && !(playerRightSideX < this.x)){
-            player.x = 200;
-            player.y = 400;
-            console.log('hit!');
+            player.hit();
         }
     } 
 };
@@ -61,8 +59,10 @@ var Player = function(x, y) {
     // The image/sprite for the player, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/char-boy.png';
-    this.x = x;
-    this.y = y;
+    
+    // Lives at Start
+    this.lives = 4;
+    this.backToInitialPosition();
 };
 
 // Update the player's position, required method for game
@@ -73,9 +73,33 @@ Player.prototype.update = function(dt) {
     // all computers.
 };
 
+Player.prototype.backToInitialPosition = function(){
+    this.x = 200;
+    this.y = 400;
+};
+
+Player.prototype.hit = function(){
+    this.backToInitialPosition();
+    console.log('hit!');
+
+    // Decrease lives when hit the Enemy
+    this.lives--;
+    // When the Player loses his lives the Game Over Screen shows up
+    if (this.lives === 0) {
+        console.log('Modal Game Over!');
+
+    }
+    console.log('Lives ' + this.lives);
+};
+
 // Draw the player on the screen, required method for game
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+Player.prototype.goToNextLevel = function(){
+    this.backToInitialPosition();
+    console.log('Next level!')
 };
 
 // Handle direction of Player
@@ -85,9 +109,7 @@ Player.prototype.handleInput = function(key) {
 
         // Check if Player reaches the "Water Block" = Wins the game
         if(this.y === -50) {
-            this.x = 200;
-            this.y = 400;
-            console.log('You won!')
+            this.goToNextLevel();
         }
     } else if (key === 'down') {
         this.y += 90;
@@ -124,6 +146,7 @@ let enemy_1 = new Enemy(0, 40, 180);
 let enemy_2 = new Enemy(0, 130, 100);
 let enemy_3 = new Enemy(0, 220, 50);
 let allEnemies = [enemy_1, enemy_2, enemy_3];
+
 // Place the player object in a variable called player
 let player = new Player(200, 400);
 
