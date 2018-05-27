@@ -90,14 +90,14 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allEnemies.forEach(function(enemy) {
+        myGame.allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        player.update();
+        myGame.player.update();
     }
 
     function checkCollisions() {
-        allEnemies.forEach(function(enemy) {
+        myGame.allEnemies.forEach(function(enemy) {
             enemy.checkCollisions();
         });
     }
@@ -155,11 +155,11 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
-        allEnemies.forEach(function(enemy) {
+        myGame.allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
-        player.render();
+        myGame.player.render();
     }
 
     /* This function does nothing but it could have been a good place to

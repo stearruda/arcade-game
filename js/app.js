@@ -1,4 +1,27 @@
 /*
+ ****** GAME CONSTRUCTOR ******
+*/
+
+// Add Player and allEnemies Object as property of Game Object
+// Add Start and Game Over Screen
+// Add Levels
+
+let Game = function() {
+/*
+ ****** INSTANTIATE OBJECTS ******
+*/
+    // Place the player object in a variable called player
+    this.player = new Player(200, 400);
+
+    // Place all enemy objects in an array called allEnemies
+    let enemy_1 = new Enemy(0, 40, 180);
+    let enemy_2 = new Enemy(0, 130, 100);
+    let enemy_3 = new Enemy(0, 220, 50);
+    this.allEnemies = [enemy_1, enemy_2, enemy_3];
+}
+
+
+/*
  ****** ENEMY CONSTRUCTOR ******
 */
 // Enemies our player must avoid
@@ -35,11 +58,12 @@ Enemy.prototype.render = function() {
 
 // When enemy and player collision happen = they occupy the same space
 Enemy.prototype.checkCollisions = function() {
+    const player = myGame.player;
     // Check if enemy and player are at same line
     if (this.y === player.y) {
         // Check if enemy and player are touching horizontaly
-        let enemyRightSideX = this.x + 101;
-        let playerRightSideX = player.x + 101;
+        const enemyRightSideX = this.x + 101;
+        const playerRightSideX = player.x + 101;
         if((enemyRightSideX > player.x) && !(playerRightSideX < this.x)){
             player.hit();
         }
@@ -137,21 +161,6 @@ Player.prototype.handleInput = function(key) {
 
 
 
-/*
- ****** INSTANTIATE OBJECTS ******
-*/
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-let enemy_1 = new Enemy(0, 40, 180);
-let enemy_2 = new Enemy(0, 130, 100);
-let enemy_3 = new Enemy(0, 220, 50);
-let allEnemies = [enemy_1, enemy_2, enemy_3];
-
-// Place the player object in a variable called player
-let player = new Player(200, 400);
-
-
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
@@ -162,5 +171,7 @@ document.addEventListener('keyup', function(e) {
         40: 'down'
     };
 
-    player.handleInput(allowedKeys[e.keyCode]);
+    myGame.player.handleInput(allowedKeys[e.keyCode]);
 });
+
+const myGame = new Game();
