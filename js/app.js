@@ -59,6 +59,9 @@ Game.prototype.showGameOverScreen = function() {
     let gameOverScreen = document.querySelector('#gameOverScreen');
     gameOverScreen.classList.add('show');
 
+    let finalScore = document.querySelector('.points-finalScore');
+    finalScore.innerHTML = this.player.points;
+
     let buttonTryAgain = document.querySelector('#tryAgain');
     buttonTryAgain.addEventListener('click', function() {
         gameOverScreen.classList.remove('show');
