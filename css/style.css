@@ -143,3 +143,7 @@ input.button {
     padding: 10px 25px;
     margin: 10px 0 0;
  }
+
+ .arrow_control::before{
+ 	font-size: 56px;
+ }

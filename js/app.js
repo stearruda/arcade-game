@@ -42,6 +42,10 @@ Game.prototype.updateTopPanel = function() {
 };
 
 Game.prototype.startGettingInput = function(){
+
+    const input = function(direction){
+        myGame.player.handleInput(direction);
+    }
     // This listens for key presses and sends the keys to your
     // Player.handleInput() method. You don't need to modify this.
     document.addEventListener('keyup', function(e) {
@@ -51,8 +55,25 @@ Game.prototype.startGettingInput = function(){
             39: 'right',
             40: 'down'
         };
-        myGame.player.handleInput(allowedKeys[e.keyCode]);
+        input(allowedKeys[e.keyCode]);
     });
+
+    document.getElementById('arrow-up').addEventListener('click', function (){
+        input('up');
+    });
+
+    document.getElementById('arrow-down').addEventListener('click', function (){
+        input('down');
+    });
+
+    document.getElementById('arrow-left').addEventListener('click', function (){
+        input('left');
+    });
+
+    document.getElementById('arrow-right').addEventListener('click', function (){
+        input('right');
+    });
+
 };
 
 Game.prototype.showStartScreen = function() {
