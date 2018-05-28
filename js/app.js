@@ -17,9 +17,9 @@ let Game = function() {
     this.player = new Player(200, 400);
 
     // Place all enemy objects in an array called allEnemies
-    let enemy_1 = new Enemy(0, 40);
-    let enemy_2 = new Enemy(0, 130);
-    let enemy_3 = new Enemy(0, 220);
+    let enemy_1 = new Enemy(40);
+    let enemy_2 = new Enemy(130);
+    let enemy_3 = new Enemy(220);
     this.allEnemies = [enemy_1, enemy_2, enemy_3];
 
     // Score
@@ -41,13 +41,29 @@ Game.prototype.updateTopPanel = function() {
     playerScore.innerHTML = this.player.points;
 };
 
+Game.prototype.startGettingInput = function(){
+    // This listens for key presses and sends the keys to your
+    // Player.handleInput() method. You don't need to modify this.
+    document.addEventListener('keyup', function(e) {
+        var allowedKeys = {
+            37: 'left',
+            38: 'up',
+            39: 'right',
+            40: 'down'
+        };
+        myGame.player.handleInput(allowedKeys[e.keyCode]);
+    });
+};
+
 Game.prototype.showStartScreen = function() {
     let startScreen = document.querySelector('#startScreen');
     startScreen.classList.add('show');
 
     let buttonPlay = document.querySelector('#playGame');
+    buttonPlay.focus();
     buttonPlay.addEventListener('click', function() {
         startScreen.classList.remove('show');
+        myGame.startGettingInput();
     });
 
     this.updateTopPanel();
@@ -72,6 +88,7 @@ Game.prototype.showGameOverScreen = function() {
     finalScore.innerHTML = this.player.points;
 
     let buttonTryAgain = document.querySelector('#tryAgain');
+    buttonTryAgain.focus();
     buttonTryAgain.addEventListener('click', function() {
         gameOverScreen.classList.remove('show');
         myGame.reset();
@@ -100,15 +117,13 @@ function getRandomInt(min, max) {
  ****** ENEMY CONSTRUCTOR ******
 */
 // Enemies our player must avoid
-let Enemy = function(x, y, speed) {
+let Enemy = function(y) {
     // Variables applied to each of our instances go here,
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
-    this.x = x;
     this.y = y;
-
     this.reset();
 };
 
@@ -129,6 +144,7 @@ Enemy.prototype.update = function(dt) {
 
 Enemy.prototype.reset = function(){
     this.speed = getRandomInt(50, 150);
+    this.x = getRandomInt(0,500);
 };
 
 Enemy.prototype.goToNextLevel = function() {
@@ -262,21 +278,6 @@ Player.prototype.handleInput = function(key) {
         }
     }
 };
-
-
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
-    var allowedKeys = {
-        37: 'left',
-        38: 'up',
-        39: 'right',
-        40: 'down'
-    };
-
-    myGame.player.handleInput(allowedKeys[e.keyCode]);
-});
 
 const myGame = new Game();
 
