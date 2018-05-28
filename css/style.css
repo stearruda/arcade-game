@@ -32,6 +32,11 @@ body {
 	margin: 0 0 3px;
 }
 
+ .heart-lives::before{
+ 	font-size: 20px;
+ 	padding: 0 2px;
+ }
+
 
 /*
  * MODAL GENERAL
@@ -144,6 +149,14 @@ input.button {
     margin: 10px 0 0;
  }
 
- .arrow_control::before{
+/*
+ * ARROW CONTROLS
+ */
+.arrow_control::before{
  	font-size: 56px;
- }
+}
+
+.arrow_directions button {
+	background-color: #ffffff;
+ 	border-style: none;
+}
