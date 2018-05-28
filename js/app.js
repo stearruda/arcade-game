@@ -17,9 +17,9 @@ let Game = function() {
     this.player = new Player(200, 400);
 
     // Place all enemy objects in an array called allEnemies
-    let enemy_1 = new Enemy(0, 40, 180);
-    let enemy_2 = new Enemy(0, 130, 100);
-    let enemy_3 = new Enemy(0, 220, 50);
+    let enemy_1 = new Enemy(0, 40);
+    let enemy_2 = new Enemy(0, 130);
+    let enemy_3 = new Enemy(0, 220);
     this.allEnemies = [enemy_1, enemy_2, enemy_3];
 
     // Score
@@ -89,7 +89,12 @@ Game.prototype.reset = function() {
 
 };
 
-
+//Taken from https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 
 /*
  ****** ENEMY CONSTRUCTOR ******
@@ -103,8 +108,8 @@ let Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    this.originalSpeed = speed;
-    this.speed = speed;
+
+    this.reset();
 };
 
 // Update the enemy's position, required method for game
@@ -123,11 +128,12 @@ Enemy.prototype.update = function(dt) {
 };
 
 Enemy.prototype.reset = function(){
-    this.speed = this.originalSpeed;
+    this.speed = getRandomInt(50, 150);
 };
 
 Enemy.prototype.goToNextLevel = function() {
-    this.speed+= 50;
+    this.speed+= getRandomInt(30,100);
+    this.x = getRandomInt(0,500);
 };
 
 // Draw the enemy on the screen, required method for game
