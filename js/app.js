@@ -2,9 +2,12 @@
  ****** GAME CONSTRUCTOR ******
 */
 
-// Add Player and allEnemies Object as property of Game Object
+// Player and allEnemies Object as properties of Game Object
 // Add Start and Game Over Screen
+// Add Reset Game
+// Update Top Panel
 // Add Levels
+
 
 let Game = function() {
 /*
@@ -18,14 +21,62 @@ let Game = function() {
     let enemy_2 = new Enemy(0, 130, 100);
     let enemy_3 = new Enemy(0, 220, 50);
     this.allEnemies = [enemy_1, enemy_2, enemy_3];
-}
+
+    // Score
+    this.score = 0;
+
+    this.updateTopPanel = function() {
+        // Update Level
+        let level = document.querySelector('.level');
+        // Update Lives
+        let playerLives = document.querySelector('span.lives');
+        playerLives.innerHTML = this.player.lives;
+        // Score
+        let playerScore = document.querySelector('.points');
+        playerScore.innerHTML = this.player.points;
+    }
+};
+
+Game.prototype.showStartScreen = function() {
+    let startScreen = document.querySelector('#startScreen');
+    startScreen.classList.add('show');
+
+    let buttonPlay = document.querySelector('#playGame');
+    buttonPlay.addEventListener('click', function() {
+        startScreen.classList.remove('show');
+    });
+
+    this.updateTopPanel();
+};
+
+
+// Shows Final Score and button to Play Again
+Game.prototype.showGameOverScreen = function() {
+    let gameOverScreen = document.querySelector('#gameOverScreen');
+    gameOverScreen.classList.add('show');
+
+    let buttonTryAgain = document.querySelector('#tryAgain');
+    buttonTryAgain.addEventListener('click', function() {
+        gameOverScreen.classList.remove('show');
+        myGame.reset();
+    });
+};
+
+Game.prototype.reset = function() {
+    console.log('Reset Game');
+    this.player.lives = 4;
+    this.player.points = 0;
+    this.player.backToInitialPosition();
+    this.updateTopPanel();
+};
+
 
 
 /*
  ****** ENEMY CONSTRUCTOR ******
 */
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
+let Enemy = function(x, y, speed) {
     // Variables applied to each of our instances go here,
 
     // The image/sprite for our enemies, this uses
@@ -86,6 +137,10 @@ var Player = function(x, y) {
     
     // Lives at Start
     this.lives = 4;
+
+    // Points of Score 
+    this.points = 0;
+
     this.backToInitialPosition();
 };
 
@@ -97,23 +152,31 @@ Player.prototype.update = function(dt) {
     // all computers.
 };
 
+Player.prototype.showScore = function(){
+    let score = document.querySelector('.points');
+    score.innerHTML = this.points;
+    console.log('Score ' + this.points);
+}
+
 Player.prototype.backToInitialPosition = function(){
     this.x = 200;
     this.y = 400;
 };
 
+// When Player have a collision with Enemy 
 Player.prototype.hit = function(){
     this.backToInitialPosition();
     console.log('hit!');
 
     // Decrease lives when hit the Enemy
     this.lives--;
-    // When the Player loses his lives the Game Over Screen shows up
-    if (this.lives === 0) {
-        console.log('Modal Game Over!');
 
+    myGame.updateTopPanel();
+
+    // Game Over Screen shows up when Player has no more lives 
+    if (this.lives === 0) {
+        myGame.showGameOverScreen();
     }
-    console.log('Lives ' + this.lives);
 };
 
 // Draw the player on the screen, required method for game
@@ -121,17 +184,21 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// A level is added when Player reaches the "Water Block"
 Player.prototype.goToNextLevel = function(){
     this.backToInitialPosition();
-    console.log('Next level!')
+    this.points+= 10;
+    myGame.updateTopPanel();
+    console.log('Next level!');
 };
 
 // Handle direction of Player
 Player.prototype.handleInput = function(key) {
+    // Top boundary 
     if (key === 'up') {
         this.y -= 90;
 
-        // Check if Player reaches the "Water Block" = Wins the game
+        // Check if Player reaches the "Water Block" = Next level
         if(this.y === -50) {
             this.goToNextLevel();
         }
@@ -175,3 +242,7 @@ document.addEventListener('keyup', function(e) {
 });
 
 const myGame = new Game();
+
+window.onload = function() {
+    myGame.showStartScreen();
+}
