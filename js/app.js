@@ -189,8 +189,15 @@ Player.prototype.render = function() {
 // A level is added when Player reaches the "Water Block"
 Player.prototype.goToNextLevel = function(){
     this.backToInitialPosition();
+
+    // Score is increased
     this.points+= 10;
+
+    // Level is increased and Top Panel is updated
     myGame.level++;
+    for (let i = 0; i < myGame.allEnemies.length; i++) {
+        myGame.allEnemies[i].speed+= 50;
+    };
     myGame.updateTopPanel();
     console.log('Next level!');
 };
