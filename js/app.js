@@ -34,8 +34,14 @@ Game.prototype.updateTopPanel = function() {
     let level = document.querySelector('.level-number');
     level.innerHTML = this.level;
     // Update Lives
-    let playerLives = document.querySelector('span.lives');
-    playerLives.innerHTML = this.player.lives;
+    let livesContainer = document.getElementById('lives_container');
+    livesContainer.innerHTML = "";
+    for(let i = 0; i < this.player.lives; i++){
+        const lifeIcon = document.createElement('i');
+        lifeIcon.setAttribute("class", "fa fa-heart heart-lives");
+        livesContainer.appendChild(lifeIcon);
+    }
+
     // Update Score
     let playerScore = document.querySelector('.points');
     playerScore.innerHTML = this.player.points;
