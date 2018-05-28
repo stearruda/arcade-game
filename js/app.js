@@ -26,19 +26,19 @@ let Game = function() {
     this.score = 0;
 
     // Level
-    this.level = 0;
+    this.level = 0; 
+};
 
-    this.updateTopPanel = function() {
-        // Update Level
-        let level = document.querySelector('.level-number');
-        level.innerHTML = this.level;
-        // Update Lives
-        let playerLives = document.querySelector('span.lives');
-        playerLives.innerHTML = this.player.lives;
-        // Update Score
-        let playerScore = document.querySelector('.points');
-        playerScore.innerHTML = this.player.points;
-    }
+Game.prototype.updateTopPanel = function() {
+    // Update Level
+    let level = document.querySelector('.level-number');
+    level.innerHTML = this.level;
+    // Update Lives
+    let playerLives = document.querySelector('span.lives');
+    playerLives.innerHTML = this.player.lives;
+    // Update Score
+    let playerScore = document.querySelector('.points');
+    playerScore.innerHTML = this.player.points;
 };
 
 Game.prototype.showStartScreen = function() {
@@ -50,6 +50,15 @@ Game.prototype.showStartScreen = function() {
         startScreen.classList.remove('show');
     });
 
+    this.updateTopPanel();
+};
+
+Game.prototype.goToNextLevel = function(){
+    // Level is increased and Top Panel is updated
+    this.level++;
+    for (let i = 0; i < this.allEnemies.length; i++) {
+        this.allEnemies[i].goToNextLevel();
+    };
     this.updateTopPanel();
 };
 
@@ -72,10 +81,12 @@ Game.prototype.showGameOverScreen = function() {
 Game.prototype.reset = function() {
     console.log('Reset Game');
     this.level = 0;
-    this.player.lives = 4;
-    this.player.points = 0;
-    this.player.backToInitialPosition();
+    this.player.reset();
+    for(let i = 0; i < this.allEnemies.length; i++){
+        this.allEnemies[i].reset();
+    }
     this.updateTopPanel();
+
 };
 
 
@@ -92,6 +103,7 @@ let Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
+    this.originalSpeed = speed;
     this.speed = speed;
 };
 
@@ -108,6 +120,14 @@ Enemy.prototype.update = function(dt) {
     if (this.x > 506) {
         this.x = -100;
     }
+};
+
+Enemy.prototype.reset = function(){
+    this.speed = this.originalSpeed;
+};
+
+Enemy.prototype.goToNextLevel = function() {
+    this.speed+= 50;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -160,6 +180,12 @@ Player.prototype.update = function(dt) {
     // all computers.
 };
 
+Player.prototype.reset = function() {
+    this.lives = 4;
+    this.points = 0;
+    this.backToInitialPosition();
+};
+
 Player.prototype.backToInitialPosition = function(){
     this.x = 200;
     this.y = 400;
@@ -193,13 +219,8 @@ Player.prototype.goToNextLevel = function(){
     // Score is increased
     this.points+= 10;
 
-    // Level is increased and Top Panel is updated
-    myGame.level++;
-    for (let i = 0; i < myGame.allEnemies.length; i++) {
-        myGame.allEnemies[i].speed+= 50;
-    };
-    myGame.updateTopPanel();
-    console.log('Next level!');
+    myGame.goToNextLevel();
+
 };
 
 // Handle direction of Player
