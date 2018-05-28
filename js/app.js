@@ -25,13 +25,17 @@ let Game = function() {
     // Score
     this.score = 0;
 
+    // Level
+    this.level = 0;
+
     this.updateTopPanel = function() {
         // Update Level
-        let level = document.querySelector('.level');
+        let level = document.querySelector('.level-number');
+        level.innerHTML = this.level;
         // Update Lives
         let playerLives = document.querySelector('span.lives');
         playerLives.innerHTML = this.player.lives;
-        // Score
+        // Update Score
         let playerScore = document.querySelector('.points');
         playerScore.innerHTML = this.player.points;
     }
@@ -64,6 +68,7 @@ Game.prototype.showGameOverScreen = function() {
 
 Game.prototype.reset = function() {
     console.log('Reset Game');
+    this.level = 0;
     this.player.lives = 4;
     this.player.points = 0;
     this.player.backToInitialPosition();
@@ -152,12 +157,6 @@ Player.prototype.update = function(dt) {
     // all computers.
 };
 
-Player.prototype.showScore = function(){
-    let score = document.querySelector('.points');
-    score.innerHTML = this.points;
-    console.log('Score ' + this.points);
-}
-
 Player.prototype.backToInitialPosition = function(){
     this.x = 200;
     this.y = 400;
@@ -188,6 +187,7 @@ Player.prototype.render = function() {
 Player.prototype.goToNextLevel = function(){
     this.backToInitialPosition();
     this.points+= 10;
+    myGame.level++;
     myGame.updateTopPanel();
     console.log('Next level!');
 };
