@@ -11,7 +11,7 @@ Arcade Game
 
 ## Description
 
-* Classic Arcade Game Frogger Clone
+* Version of Classic Arcade Game [Frogger](https://en.wikipedia.org/wiki/Frogger)
 * Project created as part of the Udacity Front-End Developer Nanodegree.
 
 ## Project Instructions
@@ -31,7 +31,9 @@ In order to run and play the game you can:
 
 ## How The Game Works
 
-Use the arrow keys on your keyboard to move your player to the water without hitting the bugs!
+Use the arrow keys on your keyboard (or the arrows below the game) and move your player to the water without hitting the bugs!
+Every time the player reaches the water another level starts and the score is increased.
+If the player hits the bug looses one life and losing all lifes the game is over and have an opportunity to play again.
 
 
 ## Code Dependencies
