@@ -2,39 +2,37 @@
  ****** GAME CONSTRUCTOR ******
 */
 
-// Player and allEnemies Object as properties of Game Object
-// Add Start and Game Over Screen
-// Add Reset Game
-// Update Top Panel
-// Add Levels
-
-
+// Contains everything about the game
 let Game = function() {
 /*
- ****** INSTANTIATE OBJECTS ******
+ ****** INSTANTIATE PLAYER AND ENEMIES ******
 */
     // Place the player object in a variable called player
     this.player = new Player(200, 400);
 
     // Place all enemy objects in an array called allEnemies
-    let enemy_1 = new Enemy(40);
-    let enemy_2 = new Enemy(130);
-    let enemy_3 = new Enemy(220);
+    const enemy_1 = new Enemy(40);
+    const enemy_2 = new Enemy(130);
+    const enemy_3 = new Enemy(220);
     this.allEnemies = [enemy_1, enemy_2, enemy_3];
 
-    // Score
+    // Initial Score
     this.score = 0;
 
-    // Level
+    // Initial Level 
     this.level = 0; 
 };
 
+// Every time player goes to next level, 
+// looses a life or 
+// the score is increased 
+// the Game Top Panel is updated
 Game.prototype.updateTopPanel = function() {
     // Update Level
-    let level = document.querySelector('.level-number');
+    const level = document.querySelector('.level-number');
     level.innerHTML = this.level;
     // Update Lives
-    let livesContainer = document.getElementById('lives_container');
+    const livesContainer = document.getElementById('lives_container');
     livesContainer.innerHTML = "";
     for(let i = 0; i < this.player.lives; i++){
         const lifeIcon = document.createElement('i');
@@ -43,19 +41,18 @@ Game.prototype.updateTopPanel = function() {
     }
 
     // Update Score
-    let playerScore = document.querySelector('.points');
+    const playerScore = document.querySelector('.points');
     playerScore.innerHTML = this.player.points;
 };
 
 Game.prototype.startGettingInput = function(){
-
     const input = function(direction){
         myGame.player.handleInput(direction);
     }
     // This listens for key presses and sends the keys to your
     // Player.handleInput() method. You don't need to modify this.
     document.addEventListener('keyup', function(e) {
-        var allowedKeys = {
+        const allowedKeys = {
             37: 'left',
             38: 'up',
             39: 'right',
@@ -64,10 +61,10 @@ Game.prototype.startGettingInput = function(){
         input(allowedKeys[e.keyCode]);
     });
 
+    // Arrow directions for mobile usage
     document.getElementById('arrow-up').addEventListener('click', function (){
         input('up');
     });
-
     document.getElementById('arrow-down').addEventListener('click', function (){
         input('down');
     });
@@ -79,14 +76,14 @@ Game.prototype.startGettingInput = function(){
     document.getElementById('arrow-right').addEventListener('click', function (){
         input('right');
     });
-
 };
 
+//Start Screen when Game appears
 Game.prototype.showStartScreen = function() {
-    let startScreen = document.querySelector('#startScreen');
+    const startScreen = document.querySelector('#startScreen');
     startScreen.classList.add('show');
 
-    let buttonPlay = document.querySelector('#playGame');
+    const buttonPlay = document.querySelector('#playGame');
     buttonPlay.focus();
     buttonPlay.addEventListener('click', function() {
         startScreen.classList.remove('show');
@@ -96,25 +93,30 @@ Game.prototype.showStartScreen = function() {
     this.updateTopPanel();
 };
 
+// Changes on Game when next level happens
 Game.prototype.goToNextLevel = function(){
-    // Level is increased and Top Panel is updated
+    // Level is increased
     this.level++;
+    // Enemies became faster
     for (let i = 0; i < this.allEnemies.length; i++) {
         this.allEnemies[i].goToNextLevel();
     };
+    // Top Panel is updated    
     this.updateTopPanel();
 };
 
 
-// Shows Final Score and button to Play Again
+// When Player looses all lifes the Game Over Screen shows up
 Game.prototype.showGameOverScreen = function() {
-    let gameOverScreen = document.querySelector('#gameOverScreen');
+    const gameOverScreen = document.querySelector('#gameOverScreen');
     gameOverScreen.classList.add('show');
 
-    let finalScore = document.querySelector('.points-finalScore');
+    // Shows Final Score
+    const finalScore = document.querySelector('.points-finalScore');
     finalScore.innerHTML = this.player.points;
 
-    let buttonTryAgain = document.querySelector('#tryAgain');
+    // Button that enables to Play Again
+    const buttonTryAgain = document.querySelector('#tryAgain');
     buttonTryAgain.focus();
     buttonTryAgain.addEventListener('click', function() {
         gameOverScreen.classList.remove('show');
@@ -122,8 +124,8 @@ Game.prototype.showGameOverScreen = function() {
     });
 };
 
+// Used on button "Try Again" to restart the game and return to its initial state
 Game.prototype.reset = function() {
-    console.log('Reset Game');
     this.level = 0;
     this.player.reset();
     for(let i = 0; i < this.allEnemies.length; i++){
@@ -132,13 +134,6 @@ Game.prototype.reset = function() {
     this.updateTopPanel();
 
 };
-
-//Taken from https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-}
 
 /*
  ****** ENEMY CONSTRUCTOR ******
@@ -164,10 +159,18 @@ Enemy.prototype.update = function(dt) {
     // https://discussions.udacity.com/t/how-do-i-define-the-enemys-speed/185100
     this.x = this.x + (this.speed * dt);
     
+    // When enemy reachs the right boundary it gets a new "X" position
     if (this.x > 506) {
         this.x = -100;
     }
 };
+
+// Based on: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 
 Enemy.prototype.reset = function(){
     this.speed = getRandomInt(50, 150);
@@ -202,7 +205,6 @@ Enemy.prototype.checkCollisions = function() {
 /*
  ****** PLAYER CONSTRUCTOR ******
 */
-// Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function(x, y) {
@@ -243,7 +245,6 @@ Player.prototype.backToInitialPosition = function(){
 // When Player have a collision with Enemy 
 Player.prototype.hit = function(){
     this.backToInitialPosition();
-    console.log('hit!');
 
     // Decrease lives when hit the Enemy
     this.lives--;
@@ -261,15 +262,13 @@ Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// A level is added when Player reaches the "Water Block"
+// When Player reaches the "Water Block"
 Player.prototype.goToNextLevel = function(){
     this.backToInitialPosition();
-
     // Score is increased
     this.points+= 10;
-
+    // A new level starts
     myGame.goToNextLevel();
-
 };
 
 // Handle direction of Player
@@ -306,8 +305,14 @@ Player.prototype.handleInput = function(key) {
     }
 };
 
+
+/*
+ ****** INSTANTIATE GAME ******
+*/
 const myGame = new Game();
 
+
+// Game Start with Start Screen
 window.onload = function() {
     myGame.showStartScreen();
 }
