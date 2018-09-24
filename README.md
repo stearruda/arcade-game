@@ -22,11 +22,11 @@ The task was to recreate a classic arcade game with provided visual assets and a
 
 In order to run and play the game you can:
 
-* Play [here](https://stearruda.github.io/arcade-game/)
+* Play [here](https://stearruda.github.io/fend-arcade-game/)
 * Run locally by downloading, cloning or forking this project:
 
     ```
-    $ git clone https://github.com/stearruda/arcade-game.git
+    $ git clone https://github.com/stearruda/fend-arcade-game.git
     ```
 
 ## How The Game Works
